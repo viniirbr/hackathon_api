@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Player {
+  id           Int           @id
+  name         String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  weigth       Float
+  height       Float
+  events       Event[]
+  observations String
+  playerStats  PlayerStats[]
+}
+
+model Event {
+  id          String    @id
+  minutes     Int
+  type        EventType @relation(fields: [eventTypeId], references: [id])
+  eventTypeId Int
+  team        Team      @relation(fields: [teamId], references: [id])
+  teamId      Int
+  player      Player    @relation(fields: [playerId], references: [id])
+  playerId    Int
+  match       Match     @relation(fields: [matchId], references: [id])
+  matchId     Int
+}
+
+model EventType {
+  id     Int     @id
+  name   String
+  events Event[]
+}
+
+model Team {
+  id      Int     @id
+  name    String
+  events  Event[]
+  matches Match[]
+}
+
+model Match {
+  id         Int      @id @default(autoincrement())
+  events     Event[]
+  lineups    Lineup[]
+  opponent   Team     @relation(fields: [opponentId], references: [id])
+  opponentId Int
+  date       DateTime
+}
+
+model Lineup {
+  id          Int           @id @default(autoincrement())
+  playerStats PlayerStats[]
+  match       Match         @relation(fields: [matchId], references: [id])
+  matchId     Int
+}
+
+model PlayerStats {
+  id          Int    @id @default(autoincrement())
+  player      Player @relation(fields: [playerId], references: [id])
+  lineup      Lineup @relation(fields: [lineupId], references: [id])
+  lineupId    Int
+  playerId    Int
+  minute_from Int
+  minute_to   Int
+}
