@@ -4,6 +4,7 @@ import { PlayerSeeder } from './PlayersSeeder.service';
 import { EventTypeSeeder } from './EventTypeSeeder.service';
 import { TeamSeeder } from './TeamSeeder.service';
 import { MatchSeeder } from './MatchSeeder.service';
+import { EventSeeder } from './EventSeeder.service';
 
 @Module({
   providers: [
@@ -13,6 +14,7 @@ import { MatchSeeder } from './MatchSeeder.service';
     EventTypeSeeder,
     TeamSeeder,
     MatchSeeder,
+    EventSeeder,
   ],
 })
 export class SeederModule {}

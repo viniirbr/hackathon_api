@@ -5,6 +5,7 @@ import { EventTypeSeeder } from './EventTypeSeeder.service';
 import { SeederModule } from './seeder.module';
 import { TeamSeeder } from './TeamSeeder.service';
 import { MatchSeeder } from './MatchSeeder.service';
+import { EventSeeder } from './EventSeeder.service';
 
 async function bootstrap() {
   const appContext = await NestFactory.createApplicationContext(SeederModule);
@@ -13,38 +14,49 @@ async function bootstrap() {
   const eventTypeSeeder = appContext.get(EventTypeSeeder);
   const teamSeeder = appContext.get(TeamSeeder);
   const matchSeeder = appContext.get(MatchSeeder);
-  try {
-    await playerSeeder.seed();
-    logger.debug('Seeding complete!');
-  } catch (error) {
-    logger.error('Seeding failed!');
-    throw error;
-  } finally {
-    appContext.close();
-  }
+  const eventSeeder = appContext.get(EventSeeder);
+  // try {
+  //   await playerSeeder.seed();
+  //   logger.debug('Seeding complete!');
+  // } catch (error) {
+  //   logger.error('Seeding failed!');
+  //   throw error;
+  // } finally {
+  //   appContext.close();
+  // }
+
+  // try {
+  //   await eventTypeSeeder.seed();
+  //   logger.debug('Seeding complete!');
+  // } catch (error) {
+  //   logger.error('Seeding failed!');
+  //   throw error;
+  // } finally {
+  //   appContext.close();
+  // }
+
+  // try {
+  //   await teamSeeder.seed();
+  //   logger.debug('Seeding complete!');
+  // } catch (error) {
+  //   logger.error('Seeding failed!');
+  //   throw error;
+  // } finally {
+  //   appContext.close();
+  // }
+
+  // try {
+  //   await matchSeeder.seed();
+  //   logger.debug('Seeding complete!');
+  // } catch (error) {
+  //   logger.error('Seeding failed!');
+  //   throw error;
+  // } finally {
+  //   appContext.close();
+  // }
 
   try {
-    await eventTypeSeeder.seed();
-    logger.debug('Seeding complete!');
-  } catch (error) {
-    logger.error('Seeding failed!');
-    throw error;
-  } finally {
-    appContext.close();
-  }
-
-  try {
-    await teamSeeder.seed();
-    logger.debug('Seeding complete!');
-  } catch (error) {
-    logger.error('Seeding failed!');
-    throw error;
-  } finally {
-    appContext.close();
-  }
-
-  try {
-    await matchSeeder.seed();
+    await eventSeeder.seed();
     logger.debug('Seeding complete!');
   } catch (error) {
     logger.error('Seeding failed!');
