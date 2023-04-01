@@ -6,6 +6,7 @@ import { SeederModule } from './seeder.module';
 import { TeamSeeder } from './TeamSeeder.service';
 import { MatchSeeder } from './MatchSeeder.service';
 import { EventSeeder } from './EventSeeder.service';
+import { PlayersStatsSeeder } from './PlayersStatsSeeder.service';
 
 async function bootstrap() {
   const appContext = await NestFactory.createApplicationContext(SeederModule);
@@ -15,6 +16,7 @@ async function bootstrap() {
   const teamSeeder = appContext.get(TeamSeeder);
   const matchSeeder = appContext.get(MatchSeeder);
   const eventSeeder = appContext.get(EventSeeder);
+  const playerStatsSeeder = appContext.get(PlayersStatsSeeder);
   // try {
   //   await playerSeeder.seed();
   //   logger.debug('Seeding complete!');
@@ -55,8 +57,17 @@ async function bootstrap() {
   //   appContext.close();
   // }
 
+  // try {
+  //   await eventSeeder.seed();
+  //   logger.debug('Seeding complete!');
+  // } catch (error) {
+  //   logger.error('Seeding failed!');
+  //   throw error;
+  // } finally {
+  //   appContext.close();
+
   try {
-    await eventSeeder.seed();
+    await playerStatsSeeder.seed();
     logger.debug('Seeding complete!');
   } catch (error) {
     logger.error('Seeding failed!');
