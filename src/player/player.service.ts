@@ -13,6 +13,13 @@ export class PlayerService {
     return await this.prismaService.player.findUnique({
       where: { id },
       select: {
+        id: true,
+        name: true,
+        height: true,
+        weigth: true,
+        observations: true,
+        createdAt: true,
+        updatedAt: true,
         playerStats: {
           select: {
             walking: true,
