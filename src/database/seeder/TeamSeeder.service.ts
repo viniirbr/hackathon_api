@@ -5,26 +5,32 @@ const teams = [
   {
     id: 968,
     name: 'Arsenal WFC',
+    abrv: 'ARS',
   },
   {
     id: 2647,
     name: 'Aston Villa',
+    abrv: 'AST',
   },
   {
     id: 965,
     name: 'Brighton & Hove Albion WFC',
+    abrv: 'BHA',
   },
   {
     id: 2652,
     name: 'Leicester City WFC',
+    abrv: 'LEI',
   },
   {
     id: 966,
     name: 'Liverpool WFC',
+    abrv: 'LPO',
   },
   {
     id: 749,
     name: 'Tottenham Hotspur Women',
+    abrv: 'TOT',
   },
 ];
 
@@ -43,6 +49,7 @@ export class TeamSeeder {
           data: {
             id: team.id,
             name: team.name,
+            abrv: team.abrv,
           },
         });
       }

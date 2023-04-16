@@ -20,6 +20,7 @@ model Player {
   events       Event[]
   observations String
   playerStats  PlayerStats[]
+  available    Boolean       @default(true)
 }
 
 model Event {
@@ -44,6 +45,7 @@ model EventType {
 model Team {
   id      Int     @id
   name    String
+  abrv    String  @default("")
   events  Event[]
   matches Match[]
 }

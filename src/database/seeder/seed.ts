@@ -37,15 +37,15 @@ async function bootstrap() {
   //   appContext.close();
   // }
 
-  // try {
-  //   await teamSeeder.seed();
-  //   logger.debug('Seeding complete!');
-  // } catch (error) {
-  //   logger.error('Seeding failed!');
-  //   throw error;
-  // } finally {
-  //   appContext.close();
-  // }
+  try {
+    await teamSeeder.seed();
+    logger.debug('Seeding complete!');
+  } catch (error) {
+    logger.error('Seeding failed!');
+    throw error;
+  } finally {
+    appContext.close();
+  }
 
   // try {
   //   await matchSeeder.seed();
@@ -66,14 +66,14 @@ async function bootstrap() {
   // } finally {
   //   appContext.close();
 
-  try {
-    await playerStatsSeeder.seed();
-    logger.debug('Seeding complete!');
-  } catch (error) {
-    logger.error('Seeding failed!');
-    throw error;
-  } finally {
-    appContext.close();
-  }
+  // try {
+  //   await playerStatsSeeder.seed();
+  //   logger.debug('Seeding complete!');
+  // } catch (error) {
+  //   logger.error('Seeding failed!');
+  //   throw error;
+  // } finally {
+  //   appContext.close();
+  // }
 }
 bootstrap();
