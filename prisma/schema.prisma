@@ -51,12 +51,13 @@ model Team {
 }
 
 model Match {
-  id          Int           @id @default(autoincrement())
-  events      Event[]
-  playerStats PlayerStats[]
-  opponent    Team          @relation(fields: [opponentId], references: [id])
-  opponentId  Int
-  date        DateTime
+  id             Int              @id @default(autoincrement())
+  events         Event[]
+  playerStats    PlayerStats[]
+  opponent       Team             @relation(fields: [opponentId], references: [id])
+  opponentId     Int
+  date           DateTime
+  FormationMatch FormationMatch[]
 }
 
 model PlayerStats {
@@ -75,4 +76,20 @@ model PlayerStats {
   sprinting          Float  @default(0)
   average_speed      Float  @default(0)
   max_speed          Float  @default(0)
+}
+
+model Formation {
+  id             Int              @id @default(autoincrement())
+  name           String
+  type           Int
+  FormationMatch FormationMatch[]
+}
+
+model FormationMatch {
+  id          Int       @id @default(autoincrement())
+  formation   Formation @relation(fields: [formationId], references: [id])
+  formationId Int
+  match       Match     @relation(fields: [matchId], references: [id])
+  matchId     Int
+  period      Int
 }

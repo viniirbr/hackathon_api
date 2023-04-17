@@ -7,6 +7,7 @@ import { TeamSeeder } from './TeamSeeder.service';
 import { MatchSeeder } from './MatchSeeder.service';
 import { EventSeeder } from './EventSeeder.service';
 import { PlayersStatsSeeder } from './PlayersStatsSeeder.service';
+import { FormationMatchSeeder } from './FormationMatchSeeder.service';
 
 async function bootstrap() {
   const appContext = await NestFactory.createApplicationContext(SeederModule);
@@ -17,6 +18,7 @@ async function bootstrap() {
   const matchSeeder = appContext.get(MatchSeeder);
   const eventSeeder = appContext.get(EventSeeder);
   const playerStatsSeeder = appContext.get(PlayersStatsSeeder);
+  const formationMatchSeeder = appContext.get(FormationMatchSeeder);
   // try {
   //   await playerSeeder.seed();
   //   logger.debug('Seeding complete!');
@@ -37,15 +39,15 @@ async function bootstrap() {
   //   appContext.close();
   // }
 
-  try {
-    await teamSeeder.seed();
-    logger.debug('Seeding complete!');
-  } catch (error) {
-    logger.error('Seeding failed!');
-    throw error;
-  } finally {
-    appContext.close();
-  }
+  // try {
+  //   await teamSeeder.seed();
+  //   logger.debug('Seeding complete!');
+  // } catch (error) {
+  //   logger.error('Seeding failed!');
+  //   throw error;
+  // } finally {
+  //   appContext.close();
+  // }
 
   // try {
   //   await matchSeeder.seed();
@@ -75,5 +77,15 @@ async function bootstrap() {
   // } finally {
   //   appContext.close();
   // }
+
+  try {
+    await formationMatchSeeder.seed();
+    logger.debug('Seeding complete!');
+  } catch (error) {
+    logger.error('Seeding failed!');
+    throw error;
+  } finally {
+    appContext.close();
+  }
 }
 bootstrap();
