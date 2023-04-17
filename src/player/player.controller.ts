@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Patch, Body } from '@nestjs/common';
 import { PlayerService } from './player.service';
 
 @Controller('player')
@@ -14,5 +14,13 @@ export class PlayerController {
   findOne(@Param() params) {
     const { id } = params;
     return this.playerService.findPlayerById(Number(id));
+  }
+
+  @Patch(':id')
+  submitObservation(
+    @Param() { id }: { id: string },
+    @Body() { observations }: { observations: string },
+  ) {
+    return this.playerService.submitObservations(Number(id), observations);
   }
 }

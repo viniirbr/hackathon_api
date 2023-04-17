@@ -76,4 +76,13 @@ export class PlayerService {
       },
     });
   }
+
+  submitObservations(id: number, observations: string) {
+    return this.prismaService.player.update({
+      where: { id },
+      data: {
+        observations,
+      },
+    });
+  }
 }
