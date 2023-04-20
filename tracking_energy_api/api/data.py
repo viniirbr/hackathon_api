@@ -70,10 +70,16 @@ def complete_weights_and_heights(option="inferred"):
    
     
 
+<<<<<<< HEAD
 
 
 def players(weights, heights):
     weights, heights = complete_weights_and_heights()
+=======
+weights, heights = complete_weights_and_heights()
+
+def players(weights, heights):
+>>>>>>> a548e9b7582b4b5c3bc4f9c498a4666969a4340d
     players = []
     names = list(weights.keys())
     directory = r"MCI Women's Files"
