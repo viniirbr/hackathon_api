@@ -1,8 +1,7 @@
 from data import city_brighton_tracking, city_leicester_tracking, city_liverpool_tracking, city_spurs_tracking, city_villa_tracking, players, complete_weights_and_heights
 from pymongo import MongoClient
-from mongo_connection import PASSWORD
+from mongo_connection import uri
 
-uri = "mongodb+srv://ja683:"+PASSWORD+"@cluster0.l2in6rm.mongodb.net/?retryWrites=true&w=majority"
 client = MongoClient(uri)
 try:
     client.admin.command('ping')

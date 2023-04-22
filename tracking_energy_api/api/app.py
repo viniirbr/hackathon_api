@@ -61,5 +61,21 @@ def add_tracking_data():
     # if a time is repeated it will add it again, I don't know how to fix it without doing to much work so for now I'll leave it like this because the info is supposed to be new
     return jsonify(f"{modified} modified documents")#json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
+@app.route('/players', methods = ["GET"])
+async def get_all_players():
+    db = client.db
+    docs = await sync_to_async(db.players_info.find)({}, {"_id":0, "ssiId": 1, "name": 1, "position":1, "team":1})
+    players = list(docs)
+    print(players)
+    return jsonify(players) # jsonify("hi")
+
+@app.route('/players/<team>', methods = ["GET"])
+async def get_team_players(team):
+    db = client.db
+    docs = await sync_to_async(db.players_info.find)({"team": team}, {"_id":0, "ssiId": 1, "name": 1, "position":1})
+    players = list(docs)
+    print(players)
+    return jsonify({"team": team, "players" : players})
+
 if __name__ == '__main__':
    app.run(debug=True)
