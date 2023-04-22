@@ -43,6 +43,7 @@ export class PlayerService {
           },
         },
         observations: true,
+        available: true,
       },
     });
   }
@@ -58,6 +59,7 @@ export class PlayerService {
         observations: true,
         createdAt: true,
         updatedAt: true,
+        available: true,
         playerStats: {
           select: {
             walking: true,
