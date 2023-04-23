@@ -5,17 +5,19 @@ from energy_calculator import energy_level_of_player_in_game, predict_time_to_th
 from flask_pymongo import PyMongo
 from mongo_connection import uri
 from math import floor
-
 from asgiref.sync import sync_to_async
-
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 client = PyMongo(app, uri=uri)
+CORS(app, support_credentials=True)
+
 @app.route('/')
 def status():
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
 @app.route('/energy', methods = ["GET"])
+@cross_origin(supports_credentials=True)
 async def energy_calculation():
     ''' returns energy level as a number between 0 and 1 if the information is found, otherwise sends "No match or player found" message'''
     ssiId = request.args.get('ssiId')
@@ -26,6 +28,7 @@ async def energy_calculation():
     return jsonify(response)
 
 @app.route('/energy/history', methods = ["GET"])
+@cross_origin(supports_credentials=True)
 async def energy_history():
     ''' returns enery levels up to a given minute if the information is found, otherwise sends "No match or player found" message'''
     ssiId = request.args.get('ssiId')
@@ -39,6 +42,7 @@ async def energy_history():
 
 
 @app.route('/energy/predict/minutes', methods = ["GET"])
+@cross_origin(supports_credentials=True)
 async def time_prediction():
     ''' returns an estimated amount of minutes to reach a certain energy level from last data'''
     ssiId = request.args.get('ssiId')
@@ -53,6 +57,7 @@ async def time_prediction():
     return jsonify(prediction)
 
 @app.route('/energy/predict/energy-level', methods = ["GET"])
+@cross_origin(supports_credentials=True)
 async def energy_prediction():
     ''' returns an estimated amount of minutes to reach a certain energy level from last data'''
     ssiId = request.args.get('ssiId')
@@ -89,6 +94,7 @@ def add_tracking_data():
     return jsonify(f"{modified} modified documents")#json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
 @app.route('/players', methods = ["GET"])
+@cross_origin(supports_credentials=True)
 async def get_all_players():
     db = client.db
     docs = await sync_to_async(db.players_info.find)({}, {"_id":0, "ssiId": 1, "name": 1, "whole name":1, "position":1, "team":1})
@@ -96,6 +102,7 @@ async def get_all_players():
     return jsonify(players) 
 
 @app.route('/players/<team>', methods = ["GET"])
+@cross_origin(supports_credentials=True)
 async def get_team_players(team):
     db = client.db
     docs = await sync_to_async(db.players_info.find)({"team": team}, {"_id":0, "ssiId": 1, "name": 1, "whole name":1, "position":1})
