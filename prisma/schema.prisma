@@ -17,6 +17,7 @@ model Player {
   updatedAt    DateTime      @updatedAt
   weigth       Float
   height       Float
+  position     String        @default("")
   events       Event[]
   observations String
   playerStats  PlayerStats[]

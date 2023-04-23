@@ -12,6 +12,7 @@ export class PlayerService {
         name: true,
         height: true,
         weigth: true,
+        position: true,
         events: {
           select: {
             type: true,
@@ -56,6 +57,7 @@ export class PlayerService {
         name: true,
         height: true,
         weigth: true,
+        position: true,
         observations: true,
         createdAt: true,
         updatedAt: true,
