@@ -81,11 +81,13 @@ export class PlayerService {
     });
   }
 
-  submitObservations(id: number, observations: string) {
+  submitObservations(id: number, observations: string, available: boolean, position: string) {
     return this.prismaService.player.update({
       where: { id },
       data: {
         observations,
+        available,
+        position
       },
     });
   }
