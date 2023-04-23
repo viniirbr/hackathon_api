@@ -107,7 +107,9 @@ async def get_team_players(team):
     db = client.db
     docs = await sync_to_async(db.players_info.find)({"team": team}, {"_id":0, "ssiId": 1, "name": 1, "whole name":1, "position":1})
     players = list(docs)
-    return jsonify({"team": team, "players" : players})
+    response = jsonify({"team": team, "players" : players})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 if __name__ == '__main__':
    app.run(debug=True)
