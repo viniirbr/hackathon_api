@@ -1,6 +1,7 @@
 import numpy as np
 from data import players, complete_weights_and_heights, city_brighton_tracking
 from datetime import datetime
+from math import floor
 
 def mets(speed, weight, seconds = 0.04):
     # Intended to receive arrays of speeds 
@@ -47,7 +48,6 @@ def energy_level_of_player_in_game(db, ssiId, date, calory_baseline = 2400, calo
         weight_col = db.players_info
         weight, = weight_col.find_one({"ssiId": ssiId}, {"_id":0, "weight": 1}).values()
         speeds1, speeds2 = np.array([speed["speed"] for speed in speeds1]), np.array([speed["speed"] for speed in speeds2])
-
         mets1 = mets(speeds1, weight)
         calories1 = calories_burnt(mets1, weight, cum = cum)
         energy1 = energy_level(calories1, calory_start=calory_start, calory_baseline=calory_baseline)
@@ -55,6 +55,40 @@ def energy_level_of_player_in_game(db, ssiId, date, calory_baseline = 2400, calo
         calories2 = calories_burnt(mets2, weight)
         energy2 = energy_level(calories2, recent_activity_factor=energy1, recovery_factor=recovery_factor, calory_start=calory_start, calory_baseline=calory_baseline)
         return energy2
+    else:
+        return None
+    
+def energy_history_of_player_in_game(db, ssiId, date, period, minute, calory_baseline = 2400, calory_start = 2000, recovery_factor = 0.2):
+    col = db.tracking
+    date = datetime.strptime(date,"%Y-%m-%d")
+    my_doc = col.find_one({"match_date" : date, "ssiId": ssiId},{"_id":0, "speeds":1})
+    if my_doc is not None:
+        speeds1, speeds2 = my_doc["speeds"].values()
+        weight_col = db.players_info
+        weight, = weight_col.find_one({"ssiId": ssiId}, {"_id":0, "weight": 1}).values()
+        granularity = int(60 / 0.04) # data at each minute
+        measures = floor(minute * granularity)
+        
+        if period == 1:
+            speeds1 = np.array([speed["speed"] for speed in speeds1[:measures]])
+            mets1 = mets(speeds1, weight)
+            calories1 = calories_burnt(mets1, weight, cum = True)
+            energy1 = energy_level(calories1, calory_start=calory_start, calory_baseline=calory_baseline)[::granularity]
+            energy_minutes = dict(zip(range(1,len(energy1)+1), energy1))
+            return {"period1": energy_minutes}
+        elif period == 2:
+            speeds1, speeds2 = np.array([speed["speed"] for speed in speeds1]), np.array([speed["speed"] for speed in speeds2[:measures]])
+            mets1 = mets(speeds1, weight)
+            calories1 = calories_burnt(mets1, weight, cum = True)
+            energy1 = energy_level(calories1, calory_start=calory_start, calory_baseline=calory_baseline)[::granularity]
+            energy_minutes_1 = dict(zip(range(1,len(energy1)+1), energy1))
+            mets2 = mets(speeds2, weight)
+            calories2 = calories_burnt(mets2, weight, cum = True)
+            energy2 = energy_level(calories2, recent_activity_factor=energy1[-1], recovery_factor=recovery_factor, calory_start=calory_start, calory_baseline=calory_baseline)[::granularity]
+            energy_minutes_2 = dict(zip(range(1,len(energy2)+1), energy2))
+            return {"period1":energy_minutes_1, "period2": energy_minutes_2}
+        else:
+            return None    
     else:
         return None
 
@@ -67,4 +101,10 @@ def predict_time_to_threshold(energy_level, energy_threshold):
     return minutes_remaining
 
 
-# wrap in a class that contains the baseline, start and db, 
+def predict_energy_after_minutes(energy_level, minutes):
+    measures = len(energy_level)
+    interval = np.arange(0,measures)
+    m,c = np.polyfit(interval, energy_level, 1) #y = mx+c
+    time = measures + minutes * 60 / 0.04
+    predicted_energy = m*time +c
+    return predicted_energy
