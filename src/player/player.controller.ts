@@ -19,8 +19,8 @@ export class PlayerController {
   @Patch(':id')
   submitObservation(
     @Param() { id }: { id: string },
-    @Body() { observations }: { observations: string },
+    @Body() { observations, available, position }: { observations: string, available: boolean, position: string },
   ) {
-    return this.playerService.submitObservations(Number(id), observations);
+    return this.playerService.submitObservations(Number(id), observations, available, position);
   }
 }
